@@ -17,6 +17,11 @@ const routes: Routes = [
   {
     path: 'list-questions',
     loadChildren: () => import('./pages/list-of-questions/list-of-questions.module').then(m => m.ListOfQuestionsModule)
+  },
+  {
+    path: '',
+    redirectTo: '/questions-management',
+    pathMatch: 'full'
   }
 ];
 

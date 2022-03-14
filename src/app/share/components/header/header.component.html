@@ -1,1 +1,10 @@
-<p>header works!</p>
+<div class="container">
+  <label class="title">Header link: </label>
+  <div *ngIf="page === 'management'" class="box-link">
+    <a href="/create-question" class="link">Create question</a>
+    <a href="/list-questions" class="link">List of question</a>
+  </div>
+  <div *ngIf="page === 'other'" class="box-link">
+    <a href="/questions-management" class="link">Management questions</a>
+  </div>
+</div>
