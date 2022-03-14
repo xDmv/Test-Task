@@ -1,0 +1,94 @@
+.container {
+  margin: auto 50px;
+
+  .name-page {
+    font-size: 18px;
+  }
+
+  .form-box {
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      padding: 5px;
+
+      .title-name {
+        margin-right: 20px;
+      }
+
+      .textarea-item {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .choice-title {
+        font-size: 16px;
+      }
+
+      .choice-box {
+        padding: 5px;
+        .choice-name {
+
+        }
+      }
+    }
+
+    .btn-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .btn-add {
+        background: #0000ff;
+        color: #fffaf0;
+        border: 1px solid #000000;
+      }
+
+      .btn-add:hover {
+        background: #00ced1;
+      }
+    }
+
+    .answers {
+
+      .answer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px;
+
+        .answer-textarea {
+          width: 100%;
+          height: auto;
+        }
+
+        .btn-delete {
+          background: #b22222;
+          color: #fffaf0;
+          border: 1px solid #000000;
+          margin-left: 20px;
+        }
+
+        .btn-delete:hover {
+          background: #8b0000;
+        }
+      }
+    }
+  }
+}
+
+.warning-textarea {
+  border: 2px solid #ff0000;
+}
+
+.warning-text {
+  color: #ff0000;
+}
