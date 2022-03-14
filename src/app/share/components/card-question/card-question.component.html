@@ -1,0 +1,18 @@
+<div class="question">
+  <div class="box">
+    <h4>Question title: </h4>
+    <p>{{ question.title }}</p>
+  </div>
+  <div class="box">
+    <h4>Question type: </h4>
+    <p>{{ question.type }}</p>
+  </div>
+  <div class="box">
+    <h4>Question create: </h4>
+    <p>{{ question.createDate }}</p>
+  </div>
+  <div class="box">
+    <button class="btn-edit" (click)="onEdit(questionIndex)">Edit</button>
+    <button class="btn-delete" (click)="onDelete(questionIndex)">Delete</button>
+  </div>
+</div>
