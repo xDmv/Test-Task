@@ -1,1 +1,9 @@
-<p>question-management works!</p>
+<app-header page="management"></app-header>
+<div class="container">
+  <div class="title-box">
+    <h3>Question Management Page</h3>
+  </div>
+  <div class="question" *ngFor="let question of questions; let i = index">
+    <app-card-question [question]="question" [questionIndex]="i" (delete)='onDeleteQuestion($event)'></app-card-question>
+  </div>
+</div>
