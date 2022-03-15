@@ -6,6 +6,6 @@ export interface Question {
   type: string;
   isRead: boolean;
   createDate: string;
-  answerDate: number;
+  answerDate: string;
   answers: Answers[];
 }
