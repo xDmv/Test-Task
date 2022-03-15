@@ -26,10 +26,9 @@ export class CardQuestionForAnswerComponent {
     this.pushResult.next({
       ...item,
       isRead: false,
-      answerDate: Date.now(),
+      answerDate: new Date().toString(),
       answers: array
     });
-    console.log('');
   }
 
 }

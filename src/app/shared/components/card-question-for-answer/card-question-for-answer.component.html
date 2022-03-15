@@ -14,7 +14,7 @@
     </div>
   </div>
   <div>
-    <p>Date of answer: {{ question.answerDate }} </p>
+    <p>Date of answer: {{ question.answerDate | date:'YYYY-MM-d HH:mm:ss' }} </p>
   </div>
   <div>
     <button (click)="onClearResult(question)">Clear result</button>
