@@ -1,0 +1,38 @@
+<div class="cart" *ngIf="question">
+  <div class="title">
+    <p>{{ question.title }}</p>
+  </div>
+  <div class="answers">
+    <ng-container *ngIf="question.type === 'open'">
+      <form [formGroup]="formQuestion">
+        <input
+          [ngClass]="formQuestion.controls['answer'].errors && formQuestion.controls['answer'].touched ?  'warning-textarea textarea-item' : 'textarea-item'"
+          name="answer"
+          formControlName="answer">
+        <p *ngIf="formQuestion.controls['answer'].errors && formQuestion.controls['answer'].touched" class="warning-text">Field is required and minimal symbols is 1 and maximum 255</p>
+      </form>
+    </ng-container>
+    <ng-container *ngIf="question.type !== 'open'">
+      <form [formGroup]="formQuestionSingle">
+        <div *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
+          <input *ngIf="question.type === 'single'" type="radio" >
+          <input *ngIf="question.type === 'multiple'" type="checkbox" [value]="answer.isChoice">
+          <label>{{ answer.answer }}</label>
+        </div>
+        {{ formQuestionSingle.controls['answers'].value | json }}
+      </form>
+    </ng-container>
+<!--    <ng-container *ngIf="question.type === 'multiple'">-->
+<!--      <div *ngFor="let item of question.answers; let i = index">-->
+<!--        <input type="checkbox" [value]="item.isChoice">-->
+<!--        <label (click)="choiceAnswer(i)">{{ item.answer }}</label>-->
+<!--      </div>-->
+<!--    </ng-container>-->
+  </div>
+  <div>
+    <p>Create Data: {{ question.createDate | date:'YYYY-MM-d HH:mm:ss' }}</p>
+  </div>
+  <div>
+    <button (click)="saveResultAnswer(question.type)">Save answer</button>
+  </div>
+</div>
