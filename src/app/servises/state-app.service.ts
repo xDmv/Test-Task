@@ -12,7 +12,7 @@ export class StateAppService {
   }
 
   init() {
-    if (localStorage.getItem('questions')) {
+    if (localStorage.getItem('questions') === null) {
       return;
     }
     const element = `${localStorage.getItem('questions')}`;
@@ -20,6 +20,9 @@ export class StateAppService {
   }
 
   setQuestion(value: Question) {
+    if (this.questions === null) {
+      this.questions = [];
+    }
     this.questions.push(value);
     localStorage.setItem('questions', JSON.stringify(this.questions));
   }
@@ -30,8 +33,22 @@ export class StateAppService {
     return this.questions;
   }
 
-  editQuestion() {
+  editQuestion(index: number): Question {
+    let item: Question[] = this.questions.filter(element => element.id === index);
+    return item[0];
+  }
 
+  saveEditQuestion(value: Question, index: number) {
+    let newQuestions: Question[] = this.questions.map(
+      (item: Question): Question => {
+        if (item.id === index) {
+          return {...value};
+        }
+        return item;
+      }
+    );
+    this.questions = newQuestions;
+    localStorage.setItem('questions', JSON.stringify(this.questions));
   }
 
   deleteQuestion(value: Question[]) {
