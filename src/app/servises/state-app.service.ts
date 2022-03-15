@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Question } from '../share/interfaces/question';
+import { Question } from '../shared/interfaces/question';
 
 @Injectable({
   providedIn: 'root'
