@@ -34,7 +34,7 @@
       <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
         <div [formGroupName]="i" class="row">
           <div class="answer">
-            <input class="answer-textarea" formControlName="answer" value="" placeholder="Add answer">
+            <input class="answer-textarea" formControlName="answer" placeholder="Add answer">
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
           <!--          <p *ngIf="answer.controls['answer'].errors && answer.controls['answer'].touched" class="warning-text">Field is required and minimal words is 1 and maximum 255</p>-->

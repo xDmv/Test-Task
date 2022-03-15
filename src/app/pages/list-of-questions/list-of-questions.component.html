@@ -1,2 +1,26 @@
 <app-header page="other"></app-header>
-<p>list-of-questions works!</p>
+<div class="container">
+  <div class="name-page">
+    <h3>List of questions Page</h3>
+  </div>
+  <div class="box-list">
+    <div class="box-list-block">
+      <ng-container *ngFor="let question of questions">
+        <app-card-question-for-list
+          *ngIf="!question.isRead"
+          [question]="question"
+          (pushResult)="isChoiceAnswer($event)"
+        >
+        </app-card-question-for-list>
+      </ng-container>
+    </div>
+    <div *ngFor="let question of answers" class="box-list-block">
+      <app-card-question-for-answer
+        [question]="question"
+        [questionIndex]="question.id"
+      >
+      </app-card-question-for-answer>
+    </div>
+  </div>
+
+</div>

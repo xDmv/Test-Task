@@ -20,10 +20,18 @@ export class EditQuestionComponent implements OnInit {
     private route: Router,
     private activateRoute: ActivatedRoute,
     public storage: StateAppService
-    ) {
+    ) {}
+
+  ngOnInit(): void {
+  }
+
+  ngAfterContentInit() {
+    this.storage.init();
+    this.init();
+  }
+  public init() {
     let id = Number(this.activateRoute.snapshot.params['id']);
     this.question = this.storage.editQuestion(id);
-    console.log('question: ', this.question);
     this.formQuestion = this.formBuilder.group({
       title: [this.question.title, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
       typeQuestion: [this.question.type, [Validators.required]],
@@ -41,13 +49,6 @@ export class EditQuestionComponent implements OnInit {
         }
       );
     }
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterContentInit() {
-    this.storage.init();
   }
 
   public choiceType(value: string) {
@@ -85,6 +86,7 @@ export class EditQuestionComponent implements OnInit {
       type: this.formQuestion.controls['typeQuestion'].value,
       isRead: false,
       createDate: this.question.createDate,
+      answerDate: 0,
       answers: this.formQuestion.controls['answers'].value
     };
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
@@ -94,6 +96,7 @@ export class EditQuestionComponent implements OnInit {
         type: this.formQuestion.controls['typeQuestion'].value,
         isRead: false,
         createDate: this.question.createDate,
+        answerDate: 0,
         answers: [
           {
             answer: '',
@@ -104,7 +107,7 @@ export class EditQuestionComponent implements OnInit {
     }
 
     this.storage.saveEditQuestion(questionEdit, this.question.id);
-    // this.route.navigateByUrl('/questions-management').then();
+    this.route.navigateByUrl('/questions-management').then();
   }
 
 }
