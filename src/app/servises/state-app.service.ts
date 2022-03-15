@@ -17,6 +17,19 @@ export class StateAppService {
     }
     const element = `${localStorage.getItem('questions')}`;
     this.questions = JSON.parse(element);
+    const x = this.questions.sort(
+      (a, b) => {
+        if (a.id < b.id) {
+          return 1;
+        }
+        if (a.id > b.id) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+    this.questions = [];
+    this.questions = x;
   }
 
   setQuestion(value: Question) {
@@ -28,8 +41,7 @@ export class StateAppService {
   }
 
   getQuestion(): Question[] {
-    const element = `${localStorage.getItem('questions')}`;
-    this.questions = JSON.parse(element);
+    this.init();
     return this.questions;
   }
 
