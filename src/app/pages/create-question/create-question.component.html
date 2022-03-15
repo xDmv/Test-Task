@@ -7,8 +7,8 @@
     <div class="title">
       <label class="title-name">Question: </label>
       <div class="textarea-item">
-        <textarea [ngClass]="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched ?  'warning-textarea textarea-item' : 'textarea-item'" formControlName="title" name="title" id="title" value="" placeholder="Question text"></textarea>
-        <p *ngIf="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched" class="warning-text">Field is required and minimal words is 1 and maximum 255</p>
+        <input [ngClass]="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched ?  'warning-textarea textarea-item' : 'textarea-item'" formControlName="title" name="title" id="title" value="" placeholder="Question text">
+        <p *ngIf="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched" class="warning-text">Field is required and minimal symbols is 1 and maximum 255</p>
       </div>
     </div>
     <div class="choice">
@@ -34,7 +34,7 @@
       <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
         <div [formGroupName]="i" class="row">
           <div class="answer">
-            <textarea class="textarea-item" formControlName="answer" class="answer-textarea" name="answer" value="" placeholder="Add answer"></textarea>
+            <input formControlName="answer" class="answer-textarea" name="answer" value="" placeholder="Add answer">
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
 <!--          <p *ngIf="answer.controls['answer'].errors && answer.controls['answer'].touched" class="warning-text">Field is required and minimal words is 1 and maximum 255</p>-->
