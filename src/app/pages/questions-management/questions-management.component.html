@@ -4,6 +4,6 @@
     <h3>Question Management Page</h3>
   </div>
   <div class="question" *ngFor="let question of questions; let i = index">
-    <app-card-question [question]="question" [questionIndex]="i" (delete)='onDeleteQuestion($event)'></app-card-question>
+    <app-card-question [question]="question" [questionIndex]="i" (delete)="onDeleteQuestion($event)"></app-card-question>
   </div>
 </div>

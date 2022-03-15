@@ -1,0 +1,50 @@
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: antiquewhite;
+  border-radius: 16px;
+
+  .box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    .box-title {
+      margin: 0;
+      padding-right: 20px;
+    }
+
+    .box-text {
+      margin: 0;
+    }
+  }
+
+  .btn-box {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 20px;
+    justify-content: space-between;
+
+    .box-btn-edit {
+      background: #0000ff;
+      color: #fffaf0;
+      border: 1px solid #000000;
+      margin-bottom: 10px;
+    }
+
+    .box-btn-delete {
+      background: #b22222;
+      color: #fffaf0;
+      border: 1px solid #000000;
+    }
+
+    .box-btn-edit:hover {
+      background: #00ced1;
+    }
+
+    .box-btn-delete:hover {
+      background: #8b0000;
+    }
+  }
+}

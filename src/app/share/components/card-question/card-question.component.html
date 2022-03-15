@@ -1,18 +1,20 @@
 <div class="question">
-  <div class="box">
-    <h4>Question title: </h4>
-    <p>{{ question.title }}</p>
+  <div>
+    <div class="box">
+      <h4 class="box-title">Question title: </h4>
+      <p class="box-text">{{ question.title }}</p>
+    </div>
+    <div class="box">
+      <h4 class="box-title">Question type: </h4>
+      <p class="box-text">{{ question.type }}</p>
+    </div>
+    <div class="box">
+      <h4 class="box-title">Question create: </h4>
+      <p class="box-text">{{ question.createDate }}</p>
+    </div>
   </div>
-  <div class="box">
-    <h4>Question type: </h4>
-    <p>{{ question.type }}</p>
-  </div>
-  <div class="box">
-    <h4>Question create: </h4>
-    <p>{{ question.createDate }}</p>
-  </div>
-  <div class="box">
-    <button class="btn-edit" (click)="onEdit(questionIndex)">Edit</button>
-    <button class="btn-delete" (click)="onDelete(questionIndex)">Delete</button>
+  <div class="btn-box">
+    <button class="box-btn-edit" (click)="onEdit(questionIndex)">Edit</button>
+    <button class="box-btn-delete" (click)="onDelete(questionIndex)">Delete</button>
   </div>
 </div>
