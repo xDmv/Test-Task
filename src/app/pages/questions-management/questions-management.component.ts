@@ -9,12 +9,16 @@ import { Question } from '../../share/interfaces/question';
 })
 export class QuestionsManagementComponent {
   public questions: Question[] = [];
+  public isNotQuestions = false;
 
   constructor(public storage: StateAppService) {}
 
   ngAfterContentInit() {
     this.storage.init();
     this.questions = this.storage.getQuestion();
+    if (this.questions === null) {
+      this.isNotQuestions = true;
+    }
   }
 
   onDeleteQuestion(index: number) {

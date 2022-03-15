@@ -20,6 +20,6 @@ export class CardQuestionComponent {
   }
 
   onEdit(index: number) {
-    this.route.navigateByUrl('/edit-question/' + index);
+    this.route.navigateByUrl('/edit-question/' + index).then();
   }
 }
