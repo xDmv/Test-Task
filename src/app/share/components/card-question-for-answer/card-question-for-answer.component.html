@@ -1,0 +1,22 @@
+<div class="cart">
+  <div class="title">
+    <p>{{ question.title }}</p>
+  </div>
+  <div *ngFor="let item of question.answers">
+    <p *ngIf="question.type === 'open'"> |{{ item.answer }} </p>
+    <div *ngIf="question.type === 'single'">
+      <input type="redio" disabled="true" [value]="item.isChoice">
+      <label>{{ item.answer }}</label>
+    </div>
+    <div *ngIf="question.type === 'multiple'">
+      <input type="checkbox" disabled="true" [value]="item.isChoice">
+      <label>{{ item.answer }}</label>
+    </div>
+  </div>
+  <div>
+    <p>Date of answer: {{ question.answerDate }} </p>
+  </div>
+  <div>
+    <button (click)="onClearResult(question)">Clear result</button>
+  </div>
+</div>
