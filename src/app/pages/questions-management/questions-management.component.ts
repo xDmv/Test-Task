@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StateAppService } from '../../servises/state-app.service';
-import { Question } from '../../share/interfaces/question';
+import { Question } from '../../shared/interfaces/question';
 
 @Component({
   selector: 'app-questions-management',

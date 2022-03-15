@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Question} from "../../share/interfaces/question";
+import {Question} from "../../shared/interfaces/question";
 import {StateAppService} from "../../servises/state-app.service";
 
 @Component({
@@ -37,15 +37,16 @@ export class ListOfQuestionsComponent implements OnInit {
   }
 
   public isChoiceAnswer(answer: Question) {
-    console.log('isChoiceAnswer: ', answer);
     this.answers.push(answer);
     this.storage.saveEditQuestion(answer, answer.id);
-    this.init();
+    this.questions = this.storage.getQuestion();
   }
 
-  public removeAnswer(answer: Question) {
+  public removeAnswer(answer: Question, i: number) {
     this.storage.saveEditQuestion(answer, answer.id);
-    this.init();
+    this.answers.splice(i, 1);
+    this.questions = this.storage.getQuestion();
+    console.log('this.answers: ', this.answers);
   }
 
 }

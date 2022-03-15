@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { Question } from '../../share/interfaces/question';
+import { Question } from '../../shared/interfaces/question';
 import { StateAppService } from '../../servises/state-app.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Answers } from '../../share/interfaces/answers';
+import { Answers } from '../../shared/interfaces/answers';
 
 
 @Component({
@@ -86,7 +86,7 @@ export class EditQuestionComponent implements OnInit {
       type: this.formQuestion.controls['typeQuestion'].value,
       isRead: false,
       createDate: this.question.createDate,
-      answerDate: 0,
+      answerDate: '',
       answers: this.formQuestion.controls['answers'].value
     };
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
@@ -96,7 +96,7 @@ export class EditQuestionComponent implements OnInit {
         type: this.formQuestion.controls['typeQuestion'].value,
         isRead: false,
         createDate: this.question.createDate,
-        answerDate: 0,
+        answerDate: '',
         answers: [
           {
             answer: '',

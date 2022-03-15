@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateQuestionComponent } from './create-question.component';
 import { CreateQuestionRoutingModule } from "./create-question-routing.module";
-import { ShareModule } from '../../share/share.module';
+import { ShareModule } from '../../shared/share.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 

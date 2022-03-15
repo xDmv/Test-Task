@@ -14,12 +14,15 @@
         </app-card-question-for-list>
       </ng-container>
     </div>
-    <div *ngFor="let question of answers" class="box-list-block">
-      <app-card-question-for-answer
-        [question]="question"
-        [questionIndex]="question.id"
-      >
-      </app-card-question-for-answer>
+    <div class="box-list-block">
+      <ng-container *ngFor="let question of answers; let i = index">
+        <app-card-question-for-answer
+          [question]="question"
+          [questionIndex]="question.id"
+          (pushResult)="removeAnswer($event, i)"
+        >
+        </app-card-question-for-answer>
+      </ng-container>
     </div>
   </div>
 

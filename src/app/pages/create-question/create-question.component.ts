@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Question } from '../../share/interfaces/question';
-import { Answers } from '../../share/interfaces/answers';
+import { Question } from '../../shared/interfaces/question';
+import { Answers } from '../../shared/interfaces/answers';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StateAppService } from '../../servises/state-app.service';
-import * as dayjs from 'dayjs'
 import { Router } from '@angular/router';
 
 
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-question.component.scss']
 })
 export class CreateQuestionComponent implements OnInit {
-
   public question!: Question;
   public formQuestion!: FormGroup;
 
@@ -62,8 +60,8 @@ export class CreateQuestionComponent implements OnInit {
       title: this.formQuestion.controls['title'].value,
       type: this.formQuestion.controls['typeQuestion'].value,
       isRead: false,
-      createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      answerDate: 0,
+      createDate: new Date().toString(),
+      answerDate: '',
       answers: this.formQuestion.controls['answers'].value
     };
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
@@ -72,8 +70,8 @@ export class CreateQuestionComponent implements OnInit {
         title: this.formQuestion.controls['title'].value,
         type: this.formQuestion.controls['typeQuestion'].value,
         isRead: false,
-        createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        answerDate: 0,
+        createDate: new Date().toString(),
+        answerDate: '',
         answers: [
           {
             answer: '',

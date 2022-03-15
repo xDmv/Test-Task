@@ -7,11 +7,11 @@
 
   .box-list {
     display: flex;
-    align-items: center;
     justify-content: space-between;
 
     .box-list-block {
       width: 50%;
+      padding: 5px;
     }
   }
 }
