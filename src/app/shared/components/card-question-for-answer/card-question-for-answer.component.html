@@ -5,11 +5,11 @@
   <div *ngFor="let item of question.answers">
     <p *ngIf="question.type === 'open'"> |{{ item.answer }} </p>
     <div *ngIf="question.type === 'single'">
-      <input type="redio" disabled="true" [value]="item.isChoice">
+      <input type="radio" disabled="true" [checked]="item.isChoice">
       <label>{{ item.answer }}</label>
     </div>
     <div *ngIf="question.type === 'multiple'">
-      <input type="checkbox" disabled="true" [value]="item.isChoice">
+      <input type="checkbox" disabled="true" [checked]="item.isChoice">
       <label>{{ item.answer }}</label>
     </div>
   </div>
