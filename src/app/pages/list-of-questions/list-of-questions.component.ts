@@ -46,7 +46,6 @@ export class ListOfQuestionsComponent implements OnInit {
     this.storage.saveEditQuestion(answer, answer.id);
     this.answers.splice(i, 1);
     this.questions = this.storage.getQuestion();
-    console.log('this.answers: ', this.answers);
   }
 
 }

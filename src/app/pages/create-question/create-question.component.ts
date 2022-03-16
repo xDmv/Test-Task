@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class CreateQuestionComponent implements OnInit {
   public question!: Question;
   public formQuestion!: FormGroup;
+  public isValid = false;
 
   constructor(
     public formBuilder : FormBuilder,
@@ -44,26 +45,21 @@ export class CreateQuestionComponent implements OnInit {
     }))
   }
 
+  public deleteAnswer(i: number) {
+    let item: FormArray = this.formQuestion.get('answers') as FormArray;
+    item.removeAt(i);
+  }
+
+  public choiceType(value: string) {
+    this.formQuestion.controls['typeQuestion'].setValue(value);
+  }
+
   public saveQuestion() {
-    const arrayAnswer: Answers[] = [];
     this.formQuestion.markAllAsTouched();
-    this.formQuestion.controls['answers'].value.map(
-      (value: Answers) => {
-        arrayAnswer.push({
-          answer: value.answer,
-          isChoice: false
-        })
-      }
-    );
-    this.question = {
-      id: Date.now(),
-      title: this.formQuestion.controls['title'].value,
-      type: this.formQuestion.controls['typeQuestion'].value,
-      isRead: false,
-      createDate: new Date().toString(),
-      answerDate: '',
-      answers: this.formQuestion.controls['answers'].value
-    };
+    if (!this.formQuestion.controls['title'].value) {
+      return;
+    }
+    this.validation(this.formQuestion.controls['typeQuestion'].value);
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
       this.question = {
         id: Date.now(),
@@ -79,17 +75,53 @@ export class CreateQuestionComponent implements OnInit {
           }
         ]
       };
+      return this.saveResult();
     }
+    if (this.isValid) {
+      this.question = {
+        id: Date.now(),
+        title: this.formQuestion.controls['title'].value,
+        type: this.formQuestion.controls['typeQuestion'].value,
+        isRead: false,
+        createDate: new Date().toString(),
+        answerDate: '',
+        answers: this.formQuestion.controls['answers'].value
+      };
+      return this.saveResult();
+    }
+  }
+
+  public validation(type: string) {
+    let array = this.formQuestion.controls['answers'].value;
+    let isTrue = 0;
+    array.map(
+      (val: Answers) => {
+        if (val.answer !== '') {
+          isTrue = isTrue + 1;
+        }
+      }
+    );
+    const result = array.length + 1;
+    if (type === 'single') {
+      if (array.length >= 2) {
+        isTrue = isTrue + 1;
+      }
+      if (isTrue === result ) {
+        this.isValid = true;
+      }
+    }
+    if (type === 'multiple') {
+      if (array.length >= 3) {
+        isTrue = array.length + 1;
+      }
+      if (isTrue === result ) {
+        this.isValid = true;
+      }
+    }
+  }
+
+  private saveResult() {
     this.storage.setQuestion(this.question);
     this.route.navigateByUrl('/questions-management').then();
-  }
-
-  public deleteAnswer(i: number) {
-    let item: FormArray = this.formQuestion.get('answers') as FormArray;
-    item.removeAt(i);
-  }
-
-  public choiceType(value: string) {
-    this.formQuestion.controls['typeQuestion'].setValue(value);
   }
 }

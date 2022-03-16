@@ -90,4 +90,15 @@
 
 .warning-text {
   color: #ff0000;
+  margin: 0;
+}
+
+.btn {
+  background: #228b22;
+  color: #fffaf0;
+  border: 1px solid #000000;
+}
+
+.btn:hover {
+  background: #adff2f;
 }

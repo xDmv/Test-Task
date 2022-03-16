@@ -1,4 +1,4 @@
-import {Answers} from "./answers";
+import { Answers } from './answers';
 
 export interface Question {
   id: number;

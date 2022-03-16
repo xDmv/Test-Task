@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 import { Question } from '../../shared/interfaces/question';
 import { StateAppService } from '../../services/state-app.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Answers } from '../../shared/interfaces/answers';
 export class EditQuestionComponent implements OnInit {
   public question!: Question;
   public formQuestion!: FormGroup;
+  public isValid = false;
 
   constructor(
     public formBuilder : FormBuilder,
@@ -69,28 +70,13 @@ export class EditQuestionComponent implements OnInit {
   }
 
   public saveQuestion() {
-    const arrayAnswer: Answers[] = [];
     this.formQuestion.markAllAsTouched();
-    this.formQuestion.controls['answers'].value.map(
-      (value: Answers) => {
-        arrayAnswer.push({
-          answer: value.answer,
-          isChoice: false
-        })
-      }
-    );
-    let questionEdit: Question;
-    questionEdit = {
-      id: this.question.id,
-      title: this.formQuestion.controls['title'].value,
-      type: this.formQuestion.controls['typeQuestion'].value,
-      isRead: false,
-      createDate: this.question.createDate,
-      answerDate: '',
-      answers: this.formQuestion.controls['answers'].value
-    };
+    if (!this.formQuestion.controls['title'].value) {
+      return;
+    }
+    this.validation(this.formQuestion.controls['typeQuestion'].value);
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
-      questionEdit = {
+      this.saveResult({
         id: this.question.id,
         title: this.formQuestion.controls['title'].value,
         type: this.formQuestion.controls['typeQuestion'].value,
@@ -103,11 +89,52 @@ export class EditQuestionComponent implements OnInit {
             isChoice: false
           }
         ]
-      };
+      });
     }
-
-    this.storage.saveEditQuestion(questionEdit, this.question.id);
-    this.route.navigateByUrl('/questions-management').then();
+    if (this.isValid) {
+      this.saveResult({
+        id: this.question.id,
+        title: this.formQuestion.controls['title'].value,
+        type: this.formQuestion.controls['typeQuestion'].value,
+        isRead: false,
+        createDate: this.question.createDate,
+        answerDate: '',
+        answers: this.formQuestion.controls['answers'].value
+      });
+    }
   }
 
+  public validation(type: string) {
+    let array = this.formQuestion.controls['answers'].value;
+    let isTrue = 0;
+    array.map(
+      (val: Answers) => {
+        if (val.answer !== '') {
+          isTrue = isTrue + 1;
+        }
+      }
+    );
+    const result = array.length + 1;
+    if (type === 'single') {
+      if (array.length >= 2) {
+        isTrue = isTrue + 1;
+      }
+      if (isTrue === result ) {
+        this.isValid = true;
+      }
+    }
+    if (type === 'multiple') {
+      if (array.length >= 3) {
+        isTrue = array.length + 1;
+      }
+      if (isTrue === result ) {
+        this.isValid = true;
+      }
+    }
+  }
+
+  private saveResult(value: Question) {
+    this.storage.setQuestion(value);
+    this.route.navigateByUrl('/questions-management').then();
+  }
 }

@@ -32,13 +32,23 @@
     </div>
     <div *ngIf="formQuestion.get('typeQuestion')?.value !== 'open'">
       <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
-        <div [formGroupName]="i" class="row">
+        <ng-container [formGroupName]="i" class="row">
           <div class="answer">
-            <input formControlName="answer" class="answer-textarea" name="answer" value="" placeholder="Add answer">
+            <input
+              formControlName="answer"
+              class="answer-textarea"
+              name="answer"
+              placeholder="Add answer text"
+              (change)="validation(formQuestion.get('typeQuestion')?.value)">
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
-<!--          <p *ngIf="answer.controls['answer'].errors && answer.controls['answer'].touched" class="warning-text">Field is required and minimal words is 1 and maximum 255</p>-->
-        </div>
+          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'single'">
+            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 2 answers</p>
+          </ng-container>
+          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'multiple'">
+            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 3 answers</p>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
     <div class="btn-box">

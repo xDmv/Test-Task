@@ -5,14 +5,14 @@
   </div>
   <form [formGroup]="formQuestion" class="form-box">
     <div class="title">
-      <label class="title-name">Question *: </label>
+      <label class="title-name">Question: </label>
       <div class="textarea-item">
         <input [ngClass]="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched ?  'warning-textarea textarea-item' : 'textarea-item'" formControlName="title" name="title" id="title" [value]="question.title" placeholder="Question text">
         <p *ngIf="formQuestion.controls['title'].errors && formQuestion.controls['title'].touched" class="warning-text">Field is required and minimal symbols is 1 and maximum 255</p>
       </div>
     </div>
     <div class="choice">
-      <label class="choice-title">Please choice type question *: </label>
+      <label class="choice-title">Please choice type question: </label>
       <div class="choice-box">
         <input type="radio" value="single" name="typeQuestion" formControlName="typeQuestion">
         <label class="choice-name" (click)="choiceType('single')">Single choice</label>
@@ -32,13 +32,23 @@
     </div>
     <div *ngIf="formQuestion.get('typeQuestion')?.value !== 'open'">
       <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
-        <div [formGroupName]="i" class="row">
+        <ng-container [formGroupName]="i" class="row">
           <div class="answer">
-            <input class="answer-textarea" formControlName="answer" placeholder="Add answer">
+            <input
+              formControlName="answer"
+              class="answer-textarea"
+              name="answer"
+              placeholder="Add answer text"
+              (change)="validation(formQuestion.get('typeQuestion')?.value)">
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
-          <!--          <p *ngIf="answer.controls['answer'].errors && answer.controls['answer'].touched" class="warning-text">Field is required and minimal words is 1 and maximum 255</p>-->
-        </div>
+          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'single'">
+            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 2 answers</p>
+          </ng-container>
+          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'multiple'">
+            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 3 answers</p>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
     <div class="btn-box">
