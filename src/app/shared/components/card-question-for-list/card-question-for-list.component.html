@@ -14,20 +14,25 @@
     </ng-container>
     <ng-container *ngIf="question.type !== 'open'">
       <form [formGroup]="formQuestionSingle">
-        <div *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
-          <input *ngIf="question.type === 'single'" type="radio" >
-          <input *ngIf="question.type === 'multiple'" type="checkbox" [value]="answer.isChoice">
-          <label>{{ answer.answer }}</label>
-        </div>
-        {{ formQuestionSingle.controls['answers'].value | json }}
+        <ng-container *ngIf="question.type === 'multiple'">
+          <ng-container formArrayName="answers" *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
+            <div [formGroupName]="j" *ngIf="j !== 0">
+              <input formControlName="isChoice" type="checkbox" [value]="answer.isChoice">
+              <label>{{ answer.answer }}</label>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="question.type === 'single'">
+          <ng-container formArrayName="answers" *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
+            <ng-container [formGroupName]="j" *ngIf="j !== 0">
+              <input formControlName="isChoice" type="radio">
+              <label>{{ j }}. {{ answer.answer }}</label>
+            </ng-container>
+          </ng-container>
+          {{ formQuestionSingle.controls['answers'].value | json }}
+        </ng-container>
       </form>
     </ng-container>
-<!--    <ng-container *ngIf="question.type === 'multiple'">-->
-<!--      <div *ngFor="let item of question.answers; let i = index">-->
-<!--        <input type="checkbox" [value]="item.isChoice">-->
-<!--        <label (click)="choiceAnswer(i)">{{ item.answer }}</label>-->
-<!--      </div>-->
-<!--    </ng-container>-->
   </div>
   <div>
     <p>Create Data: {{ question.createDate | date:'YYYY-MM-d HH:mm:ss' }}</p>

@@ -26,32 +26,34 @@ export class CardQuestionForListComponent implements OnInit {
   }
 
   public init() {
-    if (this.question.type === 'open') {
-      this.formQuestion = this.formBuilder.group({
-        answer: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
-        isChoice: true
-      });
-    }
-    if (this.question.type !== 'open') {
-      this.formQuestionSingle = this.formBuilder.group({
-        answers: this.formBuilder.array([
-          this.formBuilder.group({
-            answer: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
-            isChoice: true
-          })
-        ])
-      });
-      let item: FormArray = this.formQuestionSingle.get('answers') as FormArray;
-      this.question.answers.forEach(
-        (value: Answers) => {
-          item.push(
+    if (this.question) {
+      if (this.question.type === 'open') {
+        this.formQuestion = this.formBuilder.group({
+          answer: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
+          isChoice: true
+        });
+      }
+      if (this.question.type !== 'open') {
+        this.formQuestionSingle = this.formBuilder.group({
+          answers: this.formBuilder.array([
             this.formBuilder.group({
-              answer: [value.answer, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
-              isChoice: false
+              answer: [''],
+              isChoice: [false]
             })
-          );
-        }
-      );
+          ])
+        });
+        let item: FormArray = this.formQuestionSingle.get('answers') as FormArray;
+        this.question.answers.forEach(
+          (value: Answers) => {
+            item.push(
+              this.formBuilder.group({
+                answer: [value.answer],
+                isChoice: [false]
+              })
+            );
+          }
+        );
+      }
     }
   }
 
