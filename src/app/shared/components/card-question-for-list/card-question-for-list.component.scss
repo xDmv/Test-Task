@@ -4,11 +4,41 @@
   padding: 16px;
   margin: 20px 0;
 
-  .title {
+  .title-box {
+    margin: 5px 0;
 
+   .title {
+     margin: 0;
+   }
   }
 
   .answers {
 
+    .textarea-item {
+      width: 100%;
+      height: auto;
+    }
+
+    .warning-textarea {
+      border: 2px solid #ff0000;
+    }
+
+    .warning-text {
+      color: #ff0000;
+      margin: 0;
+    }
+
+    .answers-title {
+      margin: 0;
+    }
+
+    .single-box {
+      display: flex;
+      flex-direction: column;
+
+      .single-box-input {
+        margin: 0;
+      }
+    }
   }
 }

@@ -15,9 +15,7 @@ export class CardQuestionForListComponent implements OnInit {
 
   public formQuestion!: FormGroup;
   public formQuestionSingle!: FormGroup;
-  public choiceAnswers: number[] = [];
-  public answerForOpen: string = '';
-  public isValid = false;
+  public isValid = true;
 
   constructor(public formBuilder : FormBuilder) { }
 
@@ -33,14 +31,9 @@ export class CardQuestionForListComponent implements OnInit {
           isChoice: true
         });
       }
-      if (this.question.type !== 'open') {
+      if (this.question.type === 'multiple') {
         this.formQuestionSingle = this.formBuilder.group({
-          answers: this.formBuilder.array([
-            this.formBuilder.group({
-              answer: [''],
-              isChoice: [false]
-            })
-          ])
+          answers: this.formBuilder.array([])
         });
         let item: FormArray = this.formQuestionSingle.get('answers') as FormArray;
         this.question.answers.forEach(
@@ -54,43 +47,84 @@ export class CardQuestionForListComponent implements OnInit {
           }
         );
       }
+      if (this.question.type === 'single') {
+        this.formQuestionSingle = this.formBuilder.group({
+          index: [null]
+        });
+      }
     }
   }
-
-  // get aliases() {
-  //   return this.formQuestionSingle.get('answers') as FormArray;
-  // }
 
   public validation(type: string) {
-    if (type === 'open') {
+    if (type === 'single') {
+      if (this.formQuestionSingle.value.index === null) {
+        this.isValid = false;
+        return;
+      }
       this.isValid = true;
-      return;
     }
-
-  }
-
-  public choiceAnswer(index: number) {
-    this.choiceAnswers.push(index);
+    if (type === 'multiple') {
+      let arrayAnswers = this.formQuestionSingle.value['answers'];
+      this.isValid = false;
+      arrayAnswers.map(
+        (item: Answers) => {
+          if (item.isChoice) {
+            this.isValid = true;
+            return;
+          }
+        }
+      );
+    }
   }
 
   public saveResultAnswer(type: string) {
     if (type === 'open') {
       this.formQuestion.markAllAsTouched();
-      console.log('form: ', this.formQuestion.value);
-      let json: Question = {
-        ...this.question,
-        isRead: true,
-        answerDate: new Date().toString(),
-        answers: [
-          {
-            answer: this.formQuestion.controls['answer'].value,
-            isChoice: true
-          }
-        ]
-      };
-      return this.pushResult.next(json);
+      if (this.formQuestion.valid) {
+        let json: Question = {
+          ...this.question,
+          isRead: true,
+          answerDate: new Date().toString(),
+          answers: [
+            {
+              answer: this.formQuestion.controls['answer'].value,
+              isChoice: true
+            }
+          ]
+        };
+        return this.pushResult.next(json);
+      }
     }
     this.formQuestionSingle.markAllAsTouched();
-    console.log('formQuestionSingle: ', this.formQuestionSingle.value);
+    this.validation(type);
+    if (this.isValid) {
+      if (type === 'single') {
+        const index = this.formQuestionSingle.value.index;
+        let arrayAnswers = this.question.answers.map(
+          (value: Answers, i: number): any => {
+            if (i === index) {
+              return {
+                answer: value.answer,
+                isChoice: true
+              }
+            }
+            return value;
+          }
+        );
+        return this.pushResult.next(this.generateResult(arrayAnswers));
+      }
+      if (type === 'multiple') {
+        return this.pushResult.next(this.generateResult(this.formQuestionSingle.value['answers']));
+      }
+    }
+  }
+
+  public generateResult(value: Answers[]): Question {
+    return {
+      ...this.question,
+      isRead: true,
+      answerDate: new Date().toString(),
+      answers: value
+    }
   }
 }

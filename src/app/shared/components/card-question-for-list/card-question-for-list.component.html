@@ -1,35 +1,44 @@
 <div class="cart" *ngIf="question">
-  <div class="title">
-    <p>{{ question.title }}</p>
+  <div class="title-box">
+    <h4 class="title">Question: </h4>
+    <p class="title">{{ question.title }}</p>
   </div>
   <div class="answers">
     <ng-container *ngIf="question.type === 'open'">
+      <h4 class="answers-title">Answer:</h4>
       <form [formGroup]="formQuestion">
-        <input
+        <textarea
           [ngClass]="formQuestion.controls['answer'].errors && formQuestion.controls['answer'].touched ?  'warning-textarea textarea-item' : 'textarea-item'"
           name="answer"
           formControlName="answer">
+        </textarea>
         <p *ngIf="formQuestion.controls['answer'].errors && formQuestion.controls['answer'].touched" class="warning-text">Field is required and minimal symbols is 1 and maximum 255</p>
       </form>
     </ng-container>
     <ng-container *ngIf="question.type !== 'open'">
+      <h4 class="answers-title">Answers:</h4>
       <form [formGroup]="formQuestionSingle">
         <ng-container *ngIf="question.type === 'multiple'">
           <ng-container formArrayName="answers" *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
-            <div [formGroupName]="j" *ngIf="j !== 0">
-              <input formControlName="isChoice" type="checkbox" [value]="answer.isChoice">
+            <div [formGroupName]="j">
+              <input formControlName="isChoice" type="checkbox">
               <label>{{ answer.answer }}</label>
             </div>
           </ng-container>
+          <p *ngIf="!isValid" class="warning-text">You need choice one or more answers</p>
         </ng-container>
         <ng-container *ngIf="question.type === 'single'">
-          <ng-container formArrayName="answers" *ngFor="let answer of formQuestionSingle.controls['answers'].value; let j = index;">
-            <ng-container [formGroupName]="j" *ngIf="j !== 0">
-              <input formControlName="isChoice" type="radio">
-              <label>{{ j }}. {{ answer.answer }}</label>
+          <div class="single-box">
+            <ng-container *ngFor="let item of question.answers; let j = index;">
+              <ng-container>
+                <p class="single-box-input">
+                  <input formControlName="index" type="radio" [value]="j">
+                  <label>{{ item.answer }}</label>
+                </p>
+              </ng-container>
             </ng-container>
-          </ng-container>
-          {{ formQuestionSingle.controls['answers'].value | json }}
+            <p *ngIf="!isValid" class="warning-text">You need choice one answer</p>
+          </div>
         </ng-container>
       </form>
     </ng-container>
