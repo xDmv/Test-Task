@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Question } from '../../shared/interfaces/question';
 import { Answers } from '../../shared/interfaces/answers';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StateAppService } from '../../servises/state-app.service';
+import { StateAppService } from '../../services/state-app.service';
 import { Router } from '@angular/router';
 
 

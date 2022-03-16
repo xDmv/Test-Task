@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Question} from "../../shared/interfaces/question";
-import {StateAppService} from "../../servises/state-app.service";
+import { Question } from '../../shared/interfaces/question';
+import { StateAppService } from '../../services/state-app.service';
 
 @Component({
   selector: 'app-list-of-questions',

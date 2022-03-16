@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateAppService } from '../../servises/state-app.service';
+import { StateAppService } from '../../services/state-app.service';
 import { Question } from '../../shared/interfaces/question';
 
 @Component({
