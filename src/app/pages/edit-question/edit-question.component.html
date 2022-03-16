@@ -31,25 +31,23 @@
       <button class="btn-add" (click)="addAnswer('')">+</button>
     </div>
     <div *ngIf="formQuestion.get('typeQuestion')?.value !== 'open'">
-      <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
+      <div class="answers" formArrayName="answers" *ngFor="let answer of answers.value; let i = index;">
         <ng-container [formGroupName]="i" class="row">
           <div class="answer">
             <input
               formControlName="answer"
               class="answer-textarea"
               name="answer"
-              placeholder="Add answer text"
-              (change)="validation(formQuestion.get('typeQuestion')?.value)">
+              placeholder="Add answer text">
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
-          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'single'">
-            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 2 answers</p>
-          </ng-container>
-          <ng-container *ngIf="formQuestion.get('typeQuestion')?.value === 'multiple'">
-            <p class="warning-text" *ngIf="!isValid && formQuestion.controls['answers'].touched">Field is required and minimal symbols is 1 and maximum 255. You need create minimal 3 answers</p>
-          </ng-container>
+          <p *ngIf="answers.controls[i].get('answer')?.errors && answers.controls[i].get('answer')?.touched"
+             class="warning-text">
+            Field is required and minimal symbols is 1 and maximum 255.
+          </p>
         </ng-container>
       </div>
+      <p class="warning-text" *ngIf="answers.errors && answers.touched">You need create minimal 2 answers</p>
     </div>
     <div class="btn-box">
       <button class="btn" (click)="saveQuestion()">Save question</button>

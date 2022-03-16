@@ -14,7 +14,7 @@ import { Answers } from '../../shared/interfaces/answers';
 export class EditQuestionComponent implements OnInit {
   public question!: Question;
   public formQuestion!: FormGroup;
-  public isValid = false;
+  isValid = false;
 
   constructor(
     public formBuilder : FormBuilder,
@@ -30,20 +30,24 @@ export class EditQuestionComponent implements OnInit {
     this.storage.init();
     this.init();
   }
+
+  get answers(): FormArray {
+    return this.formQuestion.get('answers') as FormArray;
+  }
+
   public init() {
     let id = Number(this.activateRoute.snapshot.params['id']);
     this.question = this.storage.editQuestion(id);
     this.formQuestion = this.formBuilder.group({
       title: [this.question.title, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
       typeQuestion: [this.question.type, [Validators.required]],
-      answers: this.formBuilder.array([])
+      answers: this.formBuilder.array([], [Validators.required, Validators.minLength(2)])
     });
     this.choiceType(this.question.type);
     if (this.question.type !== 'open') {
-      let item: FormArray = this.formQuestion.get('answers') as FormArray;
       this.question.answers.map(
         (value) => {
-          item.push(this.formBuilder.group({
+          this.answers.push(this.formBuilder.group({
             answer: [value.answer, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
             isChoice: value.isChoice
           }))
@@ -57,24 +61,32 @@ export class EditQuestionComponent implements OnInit {
   }
 
   public addAnswer(answer: string = '') {
-    let item: FormArray = this.formQuestion.get('answers') as FormArray;
-    item.push(this.formBuilder.group({
+    this.answers.push(this.formBuilder.group({
       answer: [answer, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
       isChoice: false
     }))
   }
 
   public deleteAnswer(i: number) {
-    let item: FormArray = this.formQuestion.get('answers') as FormArray;
-    item.removeAt(i);
+    this.answers.removeAt(i);
   }
 
   public saveQuestion() {
     this.formQuestion.markAllAsTouched();
+    if (this.formQuestion.valid) {
+      this.saveResult({
+        id: this.question.id,
+        title: this.formQuestion.controls['title'].value,
+        type: this.formQuestion.controls['typeQuestion'].value,
+        isRead: false,
+        createDate: this.question.createDate,
+        answerDate: '',
+        answers: this.formQuestion.controls['answers'].value
+      });
+    }
     if (!this.formQuestion.controls['title'].value) {
       return;
     }
-    this.validation(this.formQuestion.controls['typeQuestion'].value);
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
       this.saveResult({
         id: this.question.id,
@@ -91,50 +103,10 @@ export class EditQuestionComponent implements OnInit {
         ]
       });
     }
-    if (this.isValid) {
-      this.saveResult({
-        id: this.question.id,
-        title: this.formQuestion.controls['title'].value,
-        type: this.formQuestion.controls['typeQuestion'].value,
-        isRead: false,
-        createDate: this.question.createDate,
-        answerDate: '',
-        answers: this.formQuestion.controls['answers'].value
-      });
-    }
-  }
-
-  public validation(type: string) {
-    let array = this.formQuestion.controls['answers'].value;
-    let isTrue = 0;
-    array.map(
-      (val: Answers) => {
-        if (val.answer !== '') {
-          isTrue = isTrue + 1;
-        }
-      }
-    );
-    const result = array.length + 1;
-    if (type === 'single') {
-      if (array.length >= 2) {
-        isTrue = isTrue + 1;
-      }
-      if (isTrue === result ) {
-        this.isValid = true;
-      }
-    }
-    if (type === 'multiple') {
-      if (array.length >= 3) {
-        isTrue = array.length + 1;
-      }
-      if (isTrue === result ) {
-        this.isValid = true;
-      }
-    }
   }
 
   private saveResult(value: Question) {
-    this.storage.setQuestion(value);
+    this.storage.saveEditQuestion(value, value.id);
     this.route.navigateByUrl('/questions-management').then();
   }
 }

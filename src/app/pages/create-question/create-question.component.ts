@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 export class CreateQuestionComponent implements OnInit {
   public question!: Question;
   public formQuestion!: FormGroup;
-  public isValid = false;
 
   constructor(
     public formBuilder : FormBuilder,
@@ -24,7 +23,7 @@ export class CreateQuestionComponent implements OnInit {
     this.formQuestion = this.formBuilder.group({
       title: [null, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
       typeQuestion: ['single', [Validators.required]],
-      answers: this.formBuilder.array([])
+      answers: this.formBuilder.array([], [Validators.required, Validators.minLength(2)] )
     });
   }
 
@@ -37,17 +36,19 @@ export class CreateQuestionComponent implements OnInit {
     this.storage.init();
   }
 
-  public addAnswer(answer: string = '') {
-    let item: FormArray = this.formQuestion.get('answers') as FormArray;
-    item.push(this.formBuilder.group({
-      answer: [answer, [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
+  get answers(): FormArray {
+    return this.formQuestion.get('answers') as FormArray;
+  }
+
+  public addAnswer() {
+    this.answers.push(this.formBuilder.group({
+      answer: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(1)]],
       isChoice: false
     }))
   }
 
   public deleteAnswer(i: number) {
-    let item: FormArray = this.formQuestion.get('answers') as FormArray;
-    item.removeAt(i);
+    this.answers.removeAt(i);
   }
 
   public choiceType(value: string) {
@@ -59,7 +60,6 @@ export class CreateQuestionComponent implements OnInit {
     if (!this.formQuestion.controls['title'].value) {
       return;
     }
-    this.validation(this.formQuestion.controls['typeQuestion'].value);
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
       this.question = {
         id: Date.now(),
@@ -77,7 +77,7 @@ export class CreateQuestionComponent implements OnInit {
       };
       return this.saveResult();
     }
-    if (this.isValid) {
+    if (this.formQuestion.valid) {
       this.question = {
         id: Date.now(),
         title: this.formQuestion.controls['title'].value,
@@ -88,35 +88,6 @@ export class CreateQuestionComponent implements OnInit {
         answers: this.formQuestion.controls['answers'].value
       };
       return this.saveResult();
-    }
-  }
-
-  public validation(type: string) {
-    let array = this.formQuestion.controls['answers'].value;
-    let isTrue = 0;
-    array.map(
-      (val: Answers) => {
-        if (val.answer !== '') {
-          isTrue = isTrue + 1;
-        }
-      }
-    );
-    const result = array.length + 1;
-    if (type === 'single') {
-      if (array.length >= 2) {
-        isTrue = isTrue + 1;
-      }
-      if (isTrue === result ) {
-        this.isValid = true;
-      }
-    }
-    if (type === 'multiple') {
-      if (array.length >= 3) {
-        isTrue = array.length + 1;
-      }
-      if (isTrue === result ) {
-        this.isValid = true;
-      }
     }
   }
 
