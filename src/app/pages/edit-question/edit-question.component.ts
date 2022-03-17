@@ -73,35 +73,31 @@ export class EditQuestionComponent implements OnInit {
 
   public saveQuestion() {
     this.formQuestion.markAllAsTouched();
-    if (this.formQuestion.valid) {
-      this.saveResult({
-        id: this.question.id,
-        title: this.formQuestion.controls['title'].value,
-        type: this.formQuestion.controls['typeQuestion'].value,
-        isRead: false,
-        createDate: this.question.createDate,
-        answerDate: '',
-        answers: this.formQuestion.controls['answers'].value
-      });
-    }
     if (!this.formQuestion.controls['title'].value) {
       return;
     }
-    if (this.formQuestion.controls['typeQuestion'].value === 'open') {
+    const result: Question = {
+      id: this.question.id,
+      title: this.formQuestion.controls['title'].value,
+      type: this.formQuestion.controls['typeQuestion'].value,
+      isRead: false,
+      createDate: this.question.createDate,
+      answerDate: '',
+      answers: [
+        {
+          answer: '',
+          isChoice: false
+        }
+      ]
+    }
+    if (this.formQuestion.valid) {
       this.saveResult({
-        id: this.question.id,
-        title: this.formQuestion.controls['title'].value,
-        type: this.formQuestion.controls['typeQuestion'].value,
-        isRead: false,
-        createDate: this.question.createDate,
-        answerDate: '',
-        answers: [
-          {
-            answer: '',
-            isChoice: false
-          }
-        ]
+        ...result,
+        answers: this.answers.value
       });
+    }
+    if (this.formQuestion.controls['typeQuestion'].value === 'open') {
+      this.saveResult(result);
     }
   }
 

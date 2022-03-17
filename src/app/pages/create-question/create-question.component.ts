@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from '../../shared/interfaces/question';
-import { Answers } from '../../shared/interfaces/answers';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { StateAppService } from '../../services/state-app.service';
 import { Router } from '@angular/router';
 
@@ -60,34 +59,29 @@ export class CreateQuestionComponent implements OnInit {
     if (!this.formQuestion.controls['title'].value) {
       return;
     }
+    this.question = {
+      id: Date.now(),
+      title: this.formQuestion.controls['title'].value,
+      type: this.formQuestion.controls['typeQuestion'].value,
+      isRead: false,
+      createDate: new Date().toString(),
+      answerDate: '',
+      answers: [
+        {
+          answer: '',
+          isChoice: false
+        }
+      ]
+    };
     if (this.formQuestion.controls['typeQuestion'].value === 'open') {
-      this.question = {
-        id: Date.now(),
-        title: this.formQuestion.controls['title'].value,
-        type: this.formQuestion.controls['typeQuestion'].value,
-        isRead: false,
-        createDate: new Date().toString(),
-        answerDate: '',
-        answers: [
-          {
-            answer: '',
-            isChoice: false
-          }
-        ]
-      };
-      return this.saveResult();
+      this.saveResult();
     }
     if (this.formQuestion.valid) {
       this.question = {
-        id: Date.now(),
-        title: this.formQuestion.controls['title'].value,
-        type: this.formQuestion.controls['typeQuestion'].value,
-        isRead: false,
-        createDate: new Date().toString(),
-        answerDate: '',
+        ...this.question,
         answers: this.formQuestion.controls['answers'].value
       };
-      return this.saveResult();
+      this.saveResult();
     }
   }
 

@@ -31,7 +31,7 @@
       <button class="btn-add" (click)="addAnswer('')">+</button>
     </div>
     <div *ngIf="formQuestion.get('typeQuestion')?.value !== 'open'">
-      <div class="answers" formArrayName="answers" *ngFor="let answer of answers.value; let i = index;">
+      <div class="answers" formArrayName="answers" *ngFor="let answer of answers.controls; let i = index;">
         <ng-container [formGroupName]="i" class="row">
           <div class="answer">
             <input

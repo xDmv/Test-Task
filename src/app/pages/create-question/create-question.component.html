@@ -31,19 +31,20 @@
       <button class="btn-add" (click)="addAnswer()">+</button>
     </div>
     <div *ngIf="formQuestion.get('typeQuestion')?.value !== 'open'">
-      <div class="answers" formArrayName="answers" *ngFor="let answer of formQuestion.controls['answers'].value; let i = index;">
+      <div class="answers" formArrayName="answers" *ngFor="let answer of answers.controls; let i = index;">
         <ng-container [formGroupName]="i" class="row">
           <div class="answer">
             <input
-              id="answer-{{ i }}"
+              type="text"
               formControlName="answer"
               class="answer-textarea"
               name="answer"
               placeholder="Add answer text"
+              required
             >
             <button class="btn-delete" (click)="deleteAnswer(i)">Delete</button>
           </div>
-          <p *ngIf="answers.controls[i].get('answer')?.errors && answers.controls[i].get('answer')?.touched"
+          <p *ngIf="answers.controls[i].get('answer')?.invalid && answers.controls[i].get('answer')?.touched"
              class="warning-text">
             Field is required and minimal symbols is 1 and maximum 255.
           </p>
