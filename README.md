@@ -1,5 +1,6 @@
 # Test-Task
-Angular 13 (scss, npm), moment
+Angular 13 (scss, npm, routing use Angular)
+This task is not use anything package npm or libraries only Angular.
 
 # Questionnaire (en)
 
